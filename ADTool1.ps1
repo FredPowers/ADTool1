@@ -1,4 +1,4 @@
-﻿<#
+<#
 .NOTES
 	NAME:	ADTool1.ps1
     VERSION : 1.0  17/04/2022
@@ -11,7 +11,6 @@ Procédure pour script ADTool1.ps1 --> Procédure Script ADTool1.docx
 
 
 
-
 # Réduire la fenêtre powershell pour qu'elle ne soit pas apparente.
 Add-Type -Name Window -Namespace Console -MemberDefinition '
 [DllImport("Kernel32.dll")]
@@ -20,11 +19,11 @@ public static extern IntPtr GetConsoleWindow();
 [DllImport("user32.dll")]
 public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);
 '
-function Hide-Console
-{
-    $consolePtr = [Console.Window]::GetConsoleWindow()
-    #0 hide
-    [Console.Window]::ShowWindow($consolePtr, 0)
+
+function Hide-Console {
+  $consolePtr = [Console.Window]::GetConsoleWindow()
+  #0 hide
+  [Console.Window]::ShowWindow($consolePtr, 0)
 }
 Hide-Console
 
@@ -57,6 +56,7 @@ $SaveTo = "C:\jumbor.txt"
 [byte[]]$Data = Get-Content $FilePath -Encoding Byte
 [system.convert]::ToBase64String($Data) | Set-Content $SaveTo
 
+#Fin.
 #>
 
 
@@ -69,18 +69,18 @@ $Location = Get-Location
 #paramètres de la fenêtre principale
 $form = New-Object System.Windows.Forms.Form
 $form.Text = 'ADTool1'
-$form.Size = New-Object System.Drawing.Size(700,350)
-$form.MaximumSize = New-Object System.Drawing.Size(700,350)
-$form.MinimumSize = New-Object System.Drawing.Size(700,350)
-$form.SizeGripStyle ="hide"
+$form.Size = New-Object System.Drawing.Size(700, 350)
+$form.MaximumSize = New-Object System.Drawing.Size(700, 350)
+$form.MinimumSize = New-Object System.Drawing.Size(700, 350)
+$form.SizeGripStyle = "hide"
 $form.MaximizeBox = $false
 $form.BackgroundImage = $picJL64
 $form.StartPosition = 'CenterScreen'
 
 #bouton OK
 $okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(30,200)
-$okButton.Size = New-Object System.Drawing.Size(100,40)
+$okButton.Location = New-Object System.Drawing.Point(30, 200)
+$okButton.Size = New-Object System.Drawing.Size(100, 40)
 $okButton.Text = 'OK'
 $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
 $form.AcceptButton = $okButton
@@ -88,8 +88,8 @@ $form.Controls.Add($okButton)
 
 # bouton Quitter
 $cancelButton = New-Object System.Windows.Forms.Button
-$cancelButton.Location = New-Object System.Drawing.Point(150,200)
-$cancelButton.Size = New-Object System.Drawing.Size(100,40)
+$cancelButton.Location = New-Object System.Drawing.Point(150, 200)
+$cancelButton.Size = New-Object System.Drawing.Size(100, 40)
 $cancelButton.Text = 'Quitter'
 $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
 $form.CancelButton = $cancelButton
@@ -97,23 +97,23 @@ $form.Controls.Add($cancelButton)
 
 #Nom affiché dans la fenêtre
 $label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(320,20)
-$label.Size = New-Object System.Drawing.Size(70,20)
+$label.Location = New-Object System.Drawing.Point(320, 20)
+$label.Size = New-Object System.Drawing.Size(70, 20)
 $label.Text = "ADTool1"
-$label.ForeColor ="White"
+$label.ForeColor = "White"
 $label.BackColor = "transparent"
-$label.Font = New-Object System.Drawing.Font("Arial",12)
+$label.Font = New-Object System.Drawing.Font("Arial", 12)
 $form.Controls.Add($label)
 
 
 # Noms des scripts à lancer sous forme de liste
 $ComboBox = New-Object System.Windows.Forms.ComboBox
-$ComboBox.Location = New-Object System.Drawing.Point(30,60)
-$ComboBox.Size = New-Object System.Drawing.Size(600,200)
+$ComboBox.Location = New-Object System.Drawing.Point(30, 60)
+$ComboBox.Size = New-Object System.Drawing.Size(600, 200)
 $ComboBox.Text = "MENU"
 $ComboBox.forecolor = 'blue'
 $ComboBox.SelectedIndex(1).forecolor = "red"
-$ComboBox.Font = New-Object System.Drawing.Font("Arial",11)
+$ComboBox.Font = New-Object System.Drawing.Font("Arial", 11)
 $combobox.Cursor = [System.Windows.Forms.Cursors]::Hand
 $comboBox.DropDownStyle = 'DropDownList'
 $form.Controls.Add($ComboBox)
@@ -129,886 +129,856 @@ $form.Controls.Add($ComboBox)
 
 $form.Topmost = $true
 
-$form.Add_Shown({$ComboBox.Select()})
+$form.Add_Shown({ $ComboBox.Select() })
 
 
 $result = $form.ShowDialog()
 
 
 # Si on clique sur OK le résultat en surbrillance sera pris en compte dans la liste
-if ($result -eq [System.Windows.Forms.DialogResult]::OK)
-{
-$SelectItem = [string]$ComboBox.SelectedItem
+if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+  $SelectItem = [string]$ComboBox.SelectedItem
 
 
-##################################################################################
+  ##################################################################################
 
-if ($SelectItem -eq "1 - Créer un utilisateur AD par copie (même OU et mêmes groupes)")
-  {
+  if ($SelectItem -eq "1 - Créer un utilisateur AD par copie (même OU et mêmes groupes)") {
 
 
 
-#paramètres de la fenêtre
-$form = New-Object System.Windows.Forms.Form
-$form.Text = 'Création Compte Utilisateur'
-$form.Size = New-Object System.Drawing.Size(700,400)
-$form.MaximumSize = New-Object System.Drawing.Size(700,400)
-$form.MinimumSize = New-Object System.Drawing.Size(700,400)
-$form.SizeGripStyle ="hide"
-$form.MaximizeBox = $false
-$form.BackgroundImage = $picBATOU64
-$form.StartPosition = 'CenterScreen'
+    #paramètres de la fenêtre
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = 'Création Compte Utilisateur'
+    $form.Size = New-Object System.Drawing.Size(700, 400)
+    $form.MaximumSize = New-Object System.Drawing.Size(700, 400)
+    $form.MinimumSize = New-Object System.Drawing.Size(700, 400)
+    $form.SizeGripStyle = "hide"
+    $form.MaximizeBox = $false
+    $form.BackgroundImage = $picBATOU64
+    $form.StartPosition = 'CenterScreen'
 
-$okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(30,300)
-$okButton.Size = New-Object System.Drawing.Size(100,40)
-$okButton.Text = 'OK'
-$okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-$okButton.PerformClick()
-$form.AcceptButton = $okButton
-$form.Controls.Add($okButton)
-
-
-$cancelButton = New-Object System.Windows.Forms.Button
-$cancelButton.Location = New-Object System.Drawing.Point(145,300)
-$cancelButton.Size = New-Object System.Drawing.Size(100,40)
-$cancelButton.Text = 'Quitter'
-$cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-$form.CancelButton = $cancelButton
-$form.Controls.Add($cancelButton)
-
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(26,20)
-$label.Size = New-Object System.Drawing.Size(560,30)
-$label.Text = "Entrez une partie du nom ou prenom de l'utilisateur de référence :"
-$label.Font = New-Object System.Drawing.Font("Arial",12)
-$label.BackColor = "Transparent"
-$form.Controls.Add($label)
-
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point(396,100)
-$label2.Size = New-Object System.Drawing.Size(260,20)
-$label2.Text = "Sélectionner le compte référent :"
-$label2.Font = New-Object System.Drawing.Font("Arial",12)
-$label2.BackColor = "Transparent"
-$form.Controls.Add($label2)
-
-$label3 = New-Object System.Windows.Forms.Label
-$label3.Location = New-Object System.Drawing.Point(27,210)
-$label3.Size = New-Object System.Drawing.Size(150,20)
-$label3.Text = "MDP :"
-$label3.Font = New-Object System.Drawing.Font("Arial",12)
-$label3.BackColor = "Transparent"
-$form.Controls.Add($label3)
-
-$label4 = New-Object System.Windows.Forms.Label
-$label4.Location = New-Object System.Drawing.Point(27,100)
-$label4.Size = New-Object System.Drawing.Size(280,20)
-$label4.Text = "####### Nouvel Utilisateur ####### :"
-$label4.Font = New-Object System.Drawing.Font("Arial",12)
-$label4.BackColor = "Transparent"
-$form.Controls.Add($label4)
-
-$label5 = New-Object System.Windows.Forms.Label
-$label5.Location = New-Object System.Drawing.Point(27,130)
-$label5.Size = New-Object System.Drawing.Size(150,20)
-$label5.Text = "Prénom :"
-$label5.Font = New-Object System.Drawing.Font("Arial",12)
-$label5.BackColor = "Transparent"
-$form.Controls.Add($label5)
-
-$label6 = New-Object System.Windows.Forms.Label
-$label6.Location = New-Object System.Drawing.Point(177,130)
-$label6.Size = New-Object System.Drawing.Size(150,20)
-$label6.Text = "Nom :"
-$label6.Font = New-Object System.Drawing.Font("Arial",12)
-$label6.BackColor = "Transparent"
-$form.Controls.Add($label6)
+    $okButton = New-Object System.Windows.Forms.Button
+    $okButton.Location = New-Object System.Drawing.Point(30, 300)
+    $okButton.Size = New-Object System.Drawing.Size(100, 40)
+    $okButton.Text = 'OK'
+    $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $okButton.PerformClick()
+    $form.AcceptButton = $okButton
+    $form.Controls.Add($okButton)
 
 
-$textBox = New-Object System.Windows.Forms.TextBox
-$textBox.Location = New-Object System.Drawing.Point(30,50)
-$textBox.Size = New-Object System.Drawing.Size(260,70)
-$textBox.Font = New-Object System.Drawing.Font("Arial",12)
-$form.Controls.Add($textBox)
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(145, 300)
+    $cancelButton.Size = New-Object System.Drawing.Size(100, 40)
+    $cancelButton.Text = 'Quitter'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
 
-$textBox2 = New-Object System.Windows.Forms.TextBox
-$textBox2.Location = New-Object System.Drawing.Point(30,150)
-$textBox2.Size = New-Object System.Drawing.Size(120,70)
-$textBox2.Font = New-Object System.Drawing.Font("Arial",12)
-$form.Controls.Add($textBox2)
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(26, 20)
+    $label.Size = New-Object System.Drawing.Size(560, 30)
+    $label.Text = "Entrez une partie du nom ou prenom de l'utilisateur de référence :"
+    $label.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label.BackColor = "Transparent"
+    $form.Controls.Add($label)
 
-$textBox3 = New-Object System.Windows.Forms.TextBox
-$textBox3.Location = New-Object System.Drawing.Point(180,150)
-$textBox3.Size = New-Object System.Drawing.Size(120,70)
-$textBox3.Font = New-Object System.Drawing.Font("Arial",12)
-$form.Controls.Add($textBox3)
+    $label2 = New-Object System.Windows.Forms.Label
+    $label2.Location = New-Object System.Drawing.Point(396, 100)
+    $label2.Size = New-Object System.Drawing.Size(260, 20)
+    $label2.Text = "Sélectionner le compte référent :"
+    $label2.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label2.BackColor = "Transparent"
+    $form.Controls.Add($label2)
+
+    $label3 = New-Object System.Windows.Forms.Label
+    $label3.Location = New-Object System.Drawing.Point(27, 210)
+    $label3.Size = New-Object System.Drawing.Size(150, 20)
+    $label3.Text = "MDP :"
+    $label3.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label3.BackColor = "Transparent"
+    $form.Controls.Add($label3)
+
+    $label4 = New-Object System.Windows.Forms.Label
+    $label4.Location = New-Object System.Drawing.Point(27, 100)
+    $label4.Size = New-Object System.Drawing.Size(280, 20)
+    $label4.Text = "####### Nouvel Utilisateur ####### :"
+    $label4.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label4.BackColor = "Transparent"
+    $form.Controls.Add($label4)
+
+    $label5 = New-Object System.Windows.Forms.Label
+    $label5.Location = New-Object System.Drawing.Point(27, 130)
+    $label5.Size = New-Object System.Drawing.Size(150, 20)
+    $label5.Text = "Prénom :"
+    $label5.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label5.BackColor = "Transparent"
+    $form.Controls.Add($label5)
+
+    $label6 = New-Object System.Windows.Forms.Label
+    $label6.Location = New-Object System.Drawing.Point(177, 130)
+    $label6.Size = New-Object System.Drawing.Size(150, 20)
+    $label6.Text = "Nom :"
+    $label6.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label6.BackColor = "Transparent"
+    $form.Controls.Add($label6)
 
 
-$textBox4 = New-Object System.Windows.Forms.TextBox
-$textBox4.Location = New-Object System.Drawing.Point(30,235)
-$textBox4.Size = New-Object System.Drawing.Size(180,70)
-$textBox4.Font = New-Object System.Drawing.Font("Arial",12)
-$textBox4.PasswordChar = "*";
-$form.Controls.Add($textBox4)
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Location = New-Object System.Drawing.Point(30, 50)
+    $textBox.Size = New-Object System.Drawing.Size(260, 70)
+    $textBox.Font = New-Object System.Drawing.Font("Arial", 12)
+    $form.Controls.Add($textBox)
 
-$listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point(400,125)
-$listBox.Size = New-Object System.Drawing.Size(260,140)
-$listBox.Height = 150
-$form.Controls.Add($listBox)
+    $textBox2 = New-Object System.Windows.Forms.TextBox
+    $textBox2.Location = New-Object System.Drawing.Point(30, 150)
+    $textBox2.Size = New-Object System.Drawing.Size(120, 70)
+    $textBox2.Font = New-Object System.Drawing.Font("Arial", 12)
+    $form.Controls.Add($textBox2)
 
-$Clear = {$listBox.Items.Clear()}
+    $textBox3 = New-Object System.Windows.Forms.TextBox
+    $textBox3.Location = New-Object System.Drawing.Point(180, 150)
+    $textBox3.Size = New-Object System.Drawing.Size(120, 70)
+    $textBox3.Font = New-Object System.Drawing.Font("Arial", 12)
+    $form.Controls.Add($textBox3)
 
-$ClearButton = New-Object System.Windows.Forms.Button
-$ClearButton.Location = New-Object System.Drawing.Point(400,300)
-$ClearButton.Size = New-Object System.Drawing.Size(260,40)
-$ClearButton.Text = 'Effacer la liste'
-$ClearButton.Add_Click($Clear)
-$form.Controls.Add($CLearButton)
 
-$form.Topmost = $true
+    $textBox4 = New-Object System.Windows.Forms.TextBox
+    $textBox4.Location = New-Object System.Drawing.Point(30, 235)
+    $textBox4.Size = New-Object System.Drawing.Size(180, 70)
+    $textBox4.Font = New-Object System.Drawing.Font("Arial", 12)
+    $textBox4.PasswordChar = "*";
+    $form.Controls.Add($textBox4)
 
-$form.Add_Shown({$textBox.Select()})
-$result = $form.ShowDialog()
+    $listBox = New-Object System.Windows.Forms.ListBox
+    $listBox.Location = New-Object System.Drawing.Point(400, 125)
+    $listBox.Size = New-Object System.Drawing.Size(260, 140)
+    $listBox.Height = 150
+    $form.Controls.Add($listBox)
+
+    $Clear = { $listBox.Items.Clear() }
+
+    $ClearButton = New-Object System.Windows.Forms.Button
+    $ClearButton.Location = New-Object System.Drawing.Point(400, 300)
+    $ClearButton.Size = New-Object System.Drawing.Size(260, 40)
+    $ClearButton.Text = 'Effacer la liste'
+    $ClearButton.Add_Click($Clear)
+    $form.Controls.Add($CLearButton)
+
+    $form.Topmost = $true
+
+    $form.Add_Shown({ $textBox.Select() })
+    $result = $form.ShowDialog()
 
 
 
 
-if ($result -eq [System.Windows.Forms.DialogResult]::OK) #-and ($textBox is selected))
-{
-    $LoginPartiel = $textBox.Text
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) { #-and ($textBox is selected))
+      $LoginPartiel = $textBox.Text
     
     
 
-    $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
+      $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
    
 
-$ListBox.BeginUpdate()
+      $ListBox.BeginUpdate()
 
-  foreach ($objet in $Utilisateurs) {
-                     $Noms = [string]$objet.Name
-                     $listBox.Items.Add("$Noms")
+      foreach ($objet in $Utilisateurs) {
+        $Noms = [string]$objet.Name
+        $listBox.Items.Add("$Noms")
                       
-    }
+      }
                      
 
-}
+    }
 
 
 
-do {
+    do {
 
-$result = $form.ShowDialog()
+      $result = $form.ShowDialog()
 
-if (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -lt 1))
+      if (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -lt 1))
 
-
-{
-$listBox.Items.Clear()
-$LoginPartiel = $textBox.Text
-
+      {
+        $listBox.Items.Clear()
+        $LoginPartiel = $textBox.Text
 
 
-$Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
+
+        $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
   
 
-$ListBox.BeginUpdate()
+        $ListBox.BeginUpdate()
 
-  foreach ($objet in $Utilisateurs) {
-                     $Noms = [string]$objet.Name
-                     $listBox.Items.Add("$Noms")
+        foreach ($objet in $Utilisateurs) {
+          $Noms = [string]$objet.Name
+          $listBox.Items.Add("$Noms")
 
-}
-}
+        }
+      }
 
 
 
     
- elseif (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -ge 1))
+      elseif (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -ge 1))
+      {
+        $SelectItem = [string]$listBox.SelectedItem
 
-{
-$SelectItem = [string]$listBox.SelectedItem
-
-$Prenom = $textBox2.Text
-$PrenomMaj = (Get-Culture).textinfo.totitlecase($Prenom)
-$Nom = $textBox3.Text
-$NomMAJ = $Nom.ToUpper()
-$MDP = $textBox4.Text
+        $Prenom = $textBox2.Text
+        $PrenomMaj = (Get-Culture).textinfo.totitlecase($Prenom)
+        $Nom = $textBox3.Text
+        $NomMAJ = $Nom.ToUpper()
+        $MDP = $textBox4.Text
 
 
- $Login2Ref = Get-ADUser -Filter * | where Name -eq "$SelectItem" | Select -ExpandProperty SamAccountName
- $Login = write "$Prenom.$Nom"
- $LoginBool = [bool] (Get-ADUser $Login)
- $Domaine = [System.DirectoryServices.ActiveDirectory.Domain]::getcurrentdomain() | select -ExpandProperty Name
+        $Login2Ref = Get-ADUser -Filter * | where Name -eq "$SelectItem" | Select -ExpandProperty SamAccountName
+        $Login = write "$Prenom.$Nom"
+        $LoginBool = [bool] (Get-ADUser $Login)
+        $Domaine = [System.DirectoryServices.ActiveDirectory.Domain]::getcurrentdomain() | select -ExpandProperty Name
  
 
-if ($LoginBool -eq $true)
-{
-  $Message2 = Write "un compte avec le login $Login existe déjà."
-[System.Windows.Forms.MessageBox]::Show($Message2,"Message",0,16)
+        if ($LoginBool -eq $true) {
+          $Message2 = Write "un compte avec le login $Login existe déjà."
+          [System.Windows.Forms.MessageBox]::Show($Message2, "Message", 0, 16)
 
-}
+        }
 
-else
-{
+        else {
 
-try
-{
+          try {
 
- # Création de l'utilisateur dans l'AD sous la forme prénom.nom pour le login et Prénom NOM pour le DisplayName.
- #adapter le chemin dans l'OU.
+            # Création de l'utilisateur dans l'AD sous la forme prénom.nom pour le login et Prénom NOM pour le DisplayName.
+            #adapter le chemin dans l'OU. si le -Path reste commenté, l'utilisateur sera créé dans l'OU par défaut.
 
- #exemple de -Path si l'utilisateur doit etre dans l'OU truc.local\Dossier\Utilisateurs du domaine truc.local
- #-Path "OU=Utilisateurs, OU=Dossier, DC=truc, DC=local"
+            #exemple de -Path si l'utilisateur doit etre dans l'OU truc.local\Dossier\Utilisateurs
+            #-Path "OU=Utilisateurs, OU=Dossier, DC=truc, DC=local"
 
-New-ADUser  -Name "$PrenomMaj $NomMAJ" `
-            -DisplayName "$PrenomMaj $NomMAJ" `
-            -GivenName "$PrenomMaj" `
-            -Surname "$NomMAJ" `
-            -SamAccountName "$Login" `
-            -UserPrincipalName "$Login@$Domaine" `
-            -AccountPassword (ConvertTo-SecureString -AsPlainText "$MDP" -Force) `
-            -Enable $true `
-            -ChangePasswordAtLogon $true `
- #exemple : -Path "OU=Utilisateurs, OU=Dossier, DC=truc, DC=local"`
+            New-ADUser  -Name "$PrenomMaj $NomMAJ" `
+              -DisplayName "$PrenomMaj $NomMAJ" `
+              -GivenName "$PrenomMaj" `
+              -Surname "$NomMAJ" `
+              -SamAccountName "$Login" `
+              -UserPrincipalName "$Login@$Domaine" `
+              -AccountPassword (ConvertTo-SecureString -AsPlainText "$MDP" -Force) `
+              -Enable $true `
+              -ChangePasswordAtLogon $true `
+              #-Path "OU=Utilisateurs, OU=Dossier, DC=truc, DC=local" `
 
- Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 1
 
- # Ajout des mêmes groupes de sécurité que le compte de référence
- Get-ADUser -Identity $Login2Ref -Properties memberof | Select-Object -ExpandProperty memberof |  Add-ADGroupMember -Members $Login
+            # Ajout des mêmes groupes de sécurité que le compte de référence
+            Get-ADUser -Identity $Login2Ref -Properties memberof | Select-Object -ExpandProperty memberof |  Add-ADGroupMember -Members $Login
  
- Start-Sleep -Seconds 1
+            Start-Sleep -Seconds 1
 
- # Déplacement dans la même OU que le compte de référence
- $path = get-ADuser -identity $login | select distinguishedname
- $path2 = $path -replace "@{distinguishedname=" -replace "}"
- $pathdestination = Get-ADUser -identity $Login2Ref | select distinguishedname
- $finalpathdestination = $pathdestination -replace "^.*?," -replace "}"
+            # Déplacement dans la même OU que le compte de référence
+            $path = get-ADuser -identity $login | select distinguishedname
+            $path2 = $path -replace "@{distinguishedname=" -replace "}"
+            $pathdestination = Get-ADUser -identity $Login2Ref | select distinguishedname
+            $finalpathdestination = $pathdestination -replace "^.*?," -replace "}"
 
- move-ADObject -identity "$path2" -TargetPath "$finalpathdestination"
+            move-ADObject -identity "$path2" -TargetPath "$finalpathdestination"
 
-   $Message1 = Write "L'utilisateur $PrenomMaj $NomMAJ a été créé dans l'OU `r`n$finalpathdestination."
-[System.Windows.Forms.MessageBox]::Show($Message1,"Message",0,64)
+            $Message1 = Write "L'utilisateur $PrenomMaj $NomMAJ a été créé dans l'OU `r`n$finalpathdestination."
+            [System.Windows.Forms.MessageBox]::Show($Message1, "Message", 0, 64)
 
-}
+          }
 
-catch {
+          catch {
 
-$Error1 = $Error[0].Exception.Message
-[System.Windows.Forms.MessageBox]::Show($Error1,"Message",0,16)
+            $Error1 = $Error[0].Exception.Message
+            [System.Windows.Forms.MessageBox]::Show($Error1, "Message", 0, 16)
 
-#si message d'erreur suppression de l'utilisateur qui aura été potentiellement créé mais avec des erreurs.
-#ex si le mot de passe n'a pas les règles de sécurité requise, le compte sera créé mais désactivé.
-Remove-ADUser $Login -Confirm:$false
+            Remove-ADUser $Login -Confirm:$false
 
-}
-}
-}
-}
+          }
+        }
+      }
+    }
 
-until ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
+    until ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 
 
-Powershell $PSCommandPath
+    Powershell $PSCommandPath
 
-}
+  }
  
 
-######################################################################################
+  ######################################################################################
 
 
-elseif ($SelectItem -eq "2 - Rapport sur un utilisateur")
-  {
-
-
-
-#paramètres de la fenêtre
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Dernière date de connexion"
-$form.Size = New-Object System.Drawing.Size(600,350)
-$form.MaximumSize = New-Object System.Drawing.Size(600,350)
-$form.MinimumSize = New-Object System.Drawing.Size(600,350)
-$form.SizeGripStyle ="hide"
-$form.MaximizeBox = $false
-$form.BackgroundImage = $picBATOU64
-$form.StartPosition = 'CenterScreen'
-
-$okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(30,250)
-$okButton.Size = New-Object System.Drawing.Size(100,40)
-$okButton.Text = 'OK'
-$okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-$okButton.PerformClick()
-$form.AcceptButton = $okButton
-$form.Controls.Add($okButton)
-
-
-$cancelButton = New-Object System.Windows.Forms.Button
-$cancelButton.Location = New-Object System.Drawing.Point(145,250)
-$cancelButton.Size = New-Object System.Drawing.Size(100,40)
-$cancelButton.Text = 'Quitter'
-$cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-$form.CancelButton = $cancelButton
-$form.Controls.Add($cancelButton)
-
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(26,20)
-$label.Size = New-Object System.Drawing.Size(560,40)
-$label.Text = "Entrez une partie du nom ou prenom de l'utilisateur recherché et appuyer sur OK :"
-$label.Font = New-Object System.Drawing.Font("Arial",12)
-$label.BackColor = "Transparent"
-$form.Controls.Add($label)
-
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point(296,120)
-$label2.Size = New-Object System.Drawing.Size(260,20)
-$label2.Text = "Sélectionner l'utilisateur Puis 'OK' :"
-$label2.Font = New-Object System.Drawing.Font("Arial",12)
-$label2.BackColor = "Transparent"
-$form.Controls.Add($label2)
-
-$textBox = New-Object System.Windows.Forms.TextBox
-$textBox.Location = New-Object System.Drawing.Point(30,60)
-$textBox.Size = New-Object System.Drawing.Size(260,70)
-$textBox.Font = New-Object System.Drawing.Font("Arial",12)
-$form.Controls.Add($textBox)
-
-$listBox = New-Object System.Windows.Forms.ListBox
-$listBox.Location = New-Object System.Drawing.Point(300,145)
-$listBox.Size = New-Object System.Drawing.Size(260,100)
-$listBox.Height = 100
-$form.Controls.Add($listBox)
-
-$Clear = {$listBox.Items.Clear()}
-
-$ClearButton = New-Object System.Windows.Forms.Button
-$ClearButton.Location = New-Object System.Drawing.Point(300,250)
-$ClearButton.Size = New-Object System.Drawing.Size(260,40)
-$ClearButton.Text = 'Effacer la liste'
-$ClearButton.Add_Click($Clear)
-$form.Controls.Add($CLearButton)
-
-$form.Topmost = $true
-
-$form.Add_Shown({$textBox.Select()})
-$result = $form.ShowDialog()
+  elseif ($SelectItem -eq "2 - Rapport sur un utilisateur") {
 
 
 
-if ($result -eq [System.Windows.Forms.DialogResult]::OK) #-and ($textBox is selected))
-{
-    $LoginPartiel = $textBox.Text
+    #paramètres de la fenêtre
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "Dernière date de connexion"
+    $form.Size = New-Object System.Drawing.Size(600, 350)
+    $form.MaximumSize = New-Object System.Drawing.Size(600, 350)
+    $form.MinimumSize = New-Object System.Drawing.Size(600, 350)
+    $form.SizeGripStyle = "hide"
+    $form.MaximizeBox = $false
+    $form.BackgroundImage = $picBATOU64
+    $form.StartPosition = 'CenterScreen'
+
+    $okButton = New-Object System.Windows.Forms.Button
+    $okButton.Location = New-Object System.Drawing.Point(30, 250)
+    $okButton.Size = New-Object System.Drawing.Size(100, 40)
+    $okButton.Text = 'OK'
+    $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $okButton.PerformClick()
+    $form.AcceptButton = $okButton
+    $form.Controls.Add($okButton)
+
+
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(145, 250)
+    $cancelButton.Size = New-Object System.Drawing.Size(100, 40)
+    $cancelButton.Text = 'Quitter'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(26, 20)
+    $label.Size = New-Object System.Drawing.Size(560, 40)
+    $label.Text = "Entrez une partie du nom ou prenom de l'utilisateur recherché et appuyer sur OK :"
+    $label.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label.BackColor = "Transparent"
+    $form.Controls.Add($label)
+
+    $label2 = New-Object System.Windows.Forms.Label
+    $label2.Location = New-Object System.Drawing.Point(296, 120)
+    $label2.Size = New-Object System.Drawing.Size(260, 20)
+    $label2.Text = "Sélectionner l'utilisateur Puis 'OK' :"
+    $label2.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label2.BackColor = "Transparent"
+    $form.Controls.Add($label2)
+
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Location = New-Object System.Drawing.Point(30, 60)
+    $textBox.Size = New-Object System.Drawing.Size(260, 70)
+    $textBox.Font = New-Object System.Drawing.Font("Arial", 12)
+    $form.Controls.Add($textBox)
+
+    $listBox = New-Object System.Windows.Forms.ListBox
+    $listBox.Location = New-Object System.Drawing.Point(300, 145)
+    $listBox.Size = New-Object System.Drawing.Size(260, 100)
+    $listBox.Height = 100
+    $form.Controls.Add($listBox)
+
+    $Clear = { $listBox.Items.Clear() }
+
+    $ClearButton = New-Object System.Windows.Forms.Button
+    $ClearButton.Location = New-Object System.Drawing.Point(300, 250)
+    $ClearButton.Size = New-Object System.Drawing.Size(260, 40)
+    $ClearButton.Text = 'Effacer la liste'
+    $ClearButton.Add_Click($Clear)
+    $form.Controls.Add($CLearButton)
+
+    $form.Topmost = $true
+
+    $form.Add_Shown({ $textBox.Select() })
+    $result = $form.ShowDialog()
+
+
+
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) { #-and ($textBox is selected))
+      $LoginPartiel = $textBox.Text
     
 
 
-    $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
+      $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
    
 
 
-$ListBox.BeginUpdate()
+      $ListBox.BeginUpdate()
 
-  foreach ($objet in $Utilisateurs) {
-                     $Noms = [string]$objet.Name
-                     $listBox.Items.Add("$Noms")
+      foreach ($objet in $Utilisateurs) {
+        $Noms = [string]$objet.Name
+        $listBox.Items.Add("$Noms")
                       
-    }
+      }
                      
 
-}
+    }
 
 
-do {
+    do {
 
-$result = $form.ShowDialog()
+      $result = $form.ShowDialog()
 
-if (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -lt 1))
+      if (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -lt 1))
+
+      {
+        $listBox.Items.Clear()
+        $LoginPartiel = $textBox.Text
 
 
-{
-$listBox.Items.Clear()
-$LoginPartiel = $textBox.Text
+        $Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
 
+        $ListBox.BeginUpdate()
 
-$Utilisateurs = Get-ADUser -Filter "SurName -like '$LoginPartiel*' -or GivenName -like '$LoginPartiel*' -or DisplayName -like '$LoginPartiel*'"
+        foreach ($objet in $Utilisateurs) {
+          $Noms = [string]$objet.Name
+          $listBox.Items.Add("$Noms")
 
-$ListBox.BeginUpdate()
-
-  foreach ($objet in $Utilisateurs) {
-                     $Noms = [string]$objet.Name
-                     $listBox.Items.Add("$Noms")
-
-}
-}
+        }
+      }
 
 
 
     
- elseif (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -ge 1))
-
-{
-$SelectItem = [string]$listBox.SelectedItem
-
+      elseif (($result -eq [System.Windows.Forms.DialogResult]::OK) -and ($listBox.SelectedIndices.Count -ge 1))
+      {
+        $SelectItem = [string]$listBox.SelectedItem
 
 
-$Login = Get-ADUser -Filter * | where Name -eq "$SelectItem" | Select -ExpandProperty SamAccountName
 
-$Domaine = [System.DirectoryServices.ActiveDirectory.Domain]::getcurrentdomain() | select -ExpandProperty Name
+        $Login = Get-ADUser -Filter * | where Name -eq "$SelectItem" | Select -ExpandProperty SamAccountName
 
-#Date de création du compte
-$DateCrea = Get-ADUser $Login -Properties Created | select -ExpandProperty Created
-$DateCrea2 = $DateCrea.ToString("dd/MM/yyyy HH:mm:ss")
+        $Domaine = [System.DirectoryServices.ActiveDirectory.Domain]::getcurrentdomain() | select -ExpandProperty Name
 
-#Compte activé
-$Active = Get-ADUser $Login -Properties Enabled | select -ExpandProperty Enabled
-$Active2 = if ($Active -eq $true){write "Activé"} else{write "Désactivé"}
+        #Date de création du compte
+        $DateCrea = Get-ADUser $Login -Properties Created | select -ExpandProperty Created
+        $DateCrea2 = $DateCrea.ToString("dd/MM/yyyy HH:mm:ss")
 
-#Compte verrouillé
-$Verrouille = Get-ADUser $Login -Properties LockedOut | select -ExpandProperty LockedOut
-$Verrouille2 = if ($Verrouille -eq $true){write "Vérrouillé"} else{write "Non vérrouillé"}
+        #Compte activé
+        $Active = Get-ADUser $Login -Properties Enabled | select -ExpandProperty Enabled
+        $Active2 = if ($Active -eq $true) { write "Activé" } else { write "Désactivé" }
 
-#nombre de mauvais MDP du jour
-#$BadPwd = Get-ADUser $Login -Properties badPwdCount | select -ExpandProperty badPwdCount
+        #Compte verrouillé
+        $Verrouille = Get-ADUser $Login -Properties LockedOut | select -ExpandProperty LockedOut
+        $Verrouille2 = if ($Verrouille -eq $true) { write "Vérrouillé" } else { write "Non vérrouillé" }
 
-#Date du dernier mauvais mot de passe
-$DateBadPwd = Get-ADUser $Login -Properties LastBadPasswordAttempt | select -ExpandProperty LastBadPasswordAttempt
-$DateBadPwd2 = $DateBadPwd.ToString("dd/MM/yyyy HH:mm:ss")
+        #nombre de mauvais MDP du jour
+        #$BadPwd = Get-ADUser $Login -Properties badPwdCount | select -ExpandProperty badPwdCount
 
-#Date d'expiration du MDP (ne fonctionne pas pour l'instant sur l'AD C01.mp, if, else en prévision d'une future commande différente sur C01)
+        #Date du dernier mauvais mot de passe
+        $DateBadPwd = Get-ADUser $Login -Properties LastBadPasswordAttempt | select -ExpandProperty LastBadPasswordAttempt
+        $DateBadPwd2 = $DateBadPwd.ToString("dd/MM/yyyy HH:mm:ss")
 
-$PasswordLastSet = Get-ADUser $Login -properties passwordlastset | select -ExpandProperty passwordlastset
+        #Date d'expiration du MDP (ne fonctionne pas pour l'instant sur l'AD C01.mp, if, else en prévision d'une future commande différente sur C01)
 
-if ($Domaine -eq "C01.mp")
-{
-$Date = Get-ADUser $Login -Properties msDS-UserPasswordExpiryTimeComputed | select -ExpandProperty msDS-UserPasswordExpiryTimeComputed
-$DateFormat = [DateTime]::FromFileTime($Date)
-$DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
-}
-else
-{
+        $PasswordLastSet = Get-ADUser $Login -properties passwordlastset | select -ExpandProperty passwordlastset
 
-if ($PasswordLastSet -eq $null)
-{
-$DateFormat2 = write "Le mot de passe doit etre changé à la prochaine connexion"
-}
+        if ($Domaine -eq "C01.mp") {
+          $Date = Get-ADUser $Login -Properties msDS-UserPasswordExpiryTimeComputed | select -ExpandProperty msDS-UserPasswordExpiryTimeComputed
+          $DateFormat = [DateTime]::FromFileTime($Date)
+          $DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
+        }
+        else {
 
-else
-{
+          if ($PasswordLastSet -eq $null) {
+            $DateFormat2 = write "Le mot de passe doit etre changé à la prochaine connexion"
+          }
 
-$Date = Get-ADUser $Login -Properties msDS-UserPasswordExpiryTimeComputed | select -ExpandProperty msDS-UserPasswordExpiryTimeComputed
-$DateFormat = [DateTime]::FromFileTime($Date)
-$DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
-}
-}
+          else {
 
-#Dernière date de connexion
-$Connexion = Get-ADUser $Login -Properties LastlogonDate | select -Expandproperty LastlogonDate
-$Connexion2 = $Connexion.ToString("dd/MM/yyyy HH:mm:ss")
+            $Date = Get-ADUser $Login -Properties msDS-UserPasswordExpiryTimeComputed | select -ExpandProperty msDS-UserPasswordExpiryTimeComputed
+            $DateFormat = [DateTime]::FromFileTime($Date)
+            $DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
+          }
+        }
 
-#Unité organisationnel
-$OU = Get-ADUser $Login -Properties DistinguishedName | select -ExpandProperty DistinguishedName
+        #Dernière date de connexion
+        $Connexion = Get-ADUser $Login -Properties LastlogonDate | select -Expandproperty LastlogonDate
+        $Connexion2 = $Connexion.ToString("dd/MM/yyyy HH:mm:ss")
 
-#attribute13
-$Attribute13 = Get-ADUser $Login -Properties extensionAttribute13 | select -ExpandProperty extensionAttribute13
+        #Unité organisationnel
+        $OU = Get-ADUser $Login -Properties DistinguishedName | select -ExpandProperty DistinguishedName
 
-#Groupe de sécurité de l'user selon l'AD
-if ($Domaine -eq "C01.mp")
-{
-$MembreDe = Get-ADPrincipalGroupMembership -Server MPG0023907 -Identity $Login | select -ExpandProperty SamAccountName
-$MembreDeNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $MembreDe))
-}
+        #attribute13
+        $Attribute13 = Get-ADUser $Login -Properties extensionAttribute13 | select -ExpandProperty extensionAttribute13
 
-else
-{
-$MembreDe = Get-ADPrincipalGroupMembership -Identity $Login | select -ExpandProperty SamAccountName
-$MembreDeNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $MembreDe))
-}
+        #Groupe de sécurité de l'user selon l'AD
+        if ($Domaine -eq "C01.mp") {
+          $MembreDe = Get-ADPrincipalGroupMembership -Server MPG0023907 -Identity $Login | select -ExpandProperty SamAccountName
+          $MembreDeNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $MembreDe))
+        }
+
+        else {
+          $MembreDe = Get-ADPrincipalGroupMembership -Identity $Login | select -ExpandProperty SamAccountName
+          $MembreDeNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $MembreDe))
+        }
 
 
 
 
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Rapport sur un utilisateur"
-$form.AutoSize = $true
-$form.MinimumSize = New-Object System.Drawing.Size(750,450)
-$form.MaximumSize = New-Object System.Drawing.Size(900,1000)
-$form.SizeGripStyle ="hide"
-$form.MaximizeBox = $false
-$form.StartPosition = 'CenterScreen'
+        $form = New-Object System.Windows.Forms.Form
+        $form.Text = "Rapport sur un utilisateur"
+        $form.AutoSize = $true
+        $form.MinimumSize = New-Object System.Drawing.Size(750, 450)
+        $form.MaximumSize = New-Object System.Drawing.Size(900, 1000)
+        $form.SizeGripStyle = "hide"
+        $form.MaximizeBox = $false
+        $form.StartPosition = 'CenterScreen'
 
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(10,10)
-$label.AutoSize = $true
-$label.size = New-Object System.Drawing.Size(300,40)
-#$label.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label.ForeColor = 'blue'
-$label.Font = New-Object System.Drawing.Font("consolas",12)
-$label.Text = "
+        $label = New-Object System.Windows.Forms.Label
+        $label.Location = New-Object System.Drawing.Point(10, 10)
+        $label.AutoSize = $true
+        $label.size = New-Object System.Drawing.Size(300, 40)
+        #$label.MaximumSize = New-Object System.Drawing.Size(730,950)
+        $label.ForeColor = 'blue'
+        $label.Font = New-Object System.Drawing.Font("consolas", 12)
+        $label.Text = "
 Login : $Login`r`n
 Date de création du compte : $DateCrea2`r`n
 Derniere date de connexion : $Connexion2"
-$form.Controls.Add($label)
+        $form.Controls.Add($label)
 
 
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point(10,150)
-$label2.AutoSize = $true
-$label2.MinimumSize = New-Object System.Drawing.Size(200,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2.ForeColor = 'blue'
-$label2.Font = New-Object System.Drawing.Font("consolas",12)
-$label2.Text = "Etat d'activation du compte :"
-$form.Controls.Add($label2)
+        $label2 = New-Object System.Windows.Forms.Label
+        $label2.Location = New-Object System.Drawing.Point(10, 150)
+        $label2.AutoSize = $true
+        $label2.MinimumSize = New-Object System.Drawing.Size(200, 40)
+        #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+        $label2.ForeColor = 'blue'
+        $label2.Font = New-Object System.Drawing.Font("consolas", 12)
+        $label2.Text = "Etat d'activation du compte :"
+        $form.Controls.Add($label2)
 
-if ($active2 -eq "Activé")
-{
+        if ($active2 -eq "Activé") {
 
-$label2bis = New-Object System.Windows.Forms.Label
-$label2bis.Location = New-Object System.Drawing.Point(290,150)
-$label2bis.AutoSize = $true
-$label2bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2bis.ForeColor = 'green'
-$label2bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label2bis.Text = "$Active2"
-$form.Controls.Add($label2bis)
-}
+          $label2bis = New-Object System.Windows.Forms.Label
+          $label2bis.Location = New-Object System.Drawing.Point(290, 150)
+          $label2bis.AutoSize = $true
+          $label2bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label2bis.ForeColor = 'green'
+          $label2bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label2bis.Text = "$Active2"
+          $form.Controls.Add($label2bis)
+        }
 
-else 
-{
-$label2bis = New-Object System.Windows.Forms.Label
-$label2bis.Location = New-Object System.Drawing.Point(290,150)
-$label2bis.AutoSize = $true
-$label2bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2bis.ForeColor = 'red'
-$label2bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label2bis.Text = "$Active2"
-$form.Controls.Add($label2bis)
+        else {
+          $label2bis = New-Object System.Windows.Forms.Label
+          $label2bis.Location = New-Object System.Drawing.Point(290, 150)
+          $label2bis.AutoSize = $true
+          $label2bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label2bis.ForeColor = 'red'
+          $label2bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label2bis.Text = "$Active2"
+          $form.Controls.Add($label2bis)
 
-$Reactive = {
-Set-ADUser $Login -Enabled $true
+          $Reactive = {
+            Set-ADUser $Login -Enabled $true
 
-$Message1 = Write "Le compte de l'utilisateur $Login a été réactivé."
-[System.Windows.Forms.MessageBox]::Show($Message1,"Message",0,64)
+            $Message1 = Write "Le compte de l'utilisateur $Login a été réactivé."
+            [System.Windows.Forms.MessageBox]::Show($Message1, "Message", 0, 64)
 
-}
+          }
 
-$ReactiveButton = New-Object System.Windows.Forms.Button
-$ReactiveButton.Location = New-Object System.Drawing.Point(430,145)
-$ReactiveButton.Size = New-Object System.Drawing.Size(150,30)
-$ReactiveButton.Text = 'Réactiver le compte'
-$ReactiveButton.Add_Click($Reactive)
-$form.Controls.Add($ReactiveButton)
+          $ReactiveButton = New-Object System.Windows.Forms.Button
+          $ReactiveButton.Location = New-Object System.Drawing.Point(430, 145)
+          $ReactiveButton.Size = New-Object System.Drawing.Size(150, 30)
+          $ReactiveButton.Text = 'Réactiver le compte'
+          $ReactiveButton.Add_Click($Reactive)
+          $form.Controls.Add($ReactiveButton)
 
 
-}
+        }
 
 
-$label3 = New-Object System.Windows.Forms.Label
-$label3.Location = New-Object System.Drawing.Point(10,190)
-$label3.AutoSize = $true
-$label3.MinimumSize = New-Object System.Drawing.Size(300,40)
-#$label3.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label3.ForeColor = 'blue'
-$label3.Font = New-Object System.Drawing.Font("consolas",12)
-$label3.Text = "Etat de verrouillage du compte :"
-$form.Controls.Add($label3)
+        $label3 = New-Object System.Windows.Forms.Label
+        $label3.Location = New-Object System.Drawing.Point(10, 190)
+        $label3.AutoSize = $true
+        $label3.MinimumSize = New-Object System.Drawing.Size(300, 40)
+        #$label3.MaximumSize = New-Object System.Drawing.Size(730,950)
+        $label3.ForeColor = 'blue'
+        $label3.Font = New-Object System.Drawing.Font("consolas", 12)
+        $label3.Text = "Etat de verrouillage du compte :"
+        $form.Controls.Add($label3)
 
-if ($verrouille2 -eq "Vérouillé")
-{
+        if ($verrouille2 -eq "Vérouillé") {
 
-$label3bis = New-Object System.Windows.Forms.Label
-$label3bis.Location = New-Object System.Drawing.Point(320,190)
-$label3bis.AutoSize = $true
-$label3bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label3bis.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label3bis.ForeColor = 'red'
-$label3bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label3bis.Text = "$verrouille2"
-$form.Controls.Add($label3bis)
+          $label3bis = New-Object System.Windows.Forms.Label
+          $label3bis.Location = New-Object System.Drawing.Point(320, 190)
+          $label3bis.AutoSize = $true
+          $label3bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label3bis.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label3bis.ForeColor = 'red'
+          $label3bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label3bis.Text = "$verrouille2"
+          $form.Controls.Add($label3bis)
 
-$Deverrouiller = {
-Unlock-ADAccount $Login
+          $Deverrouiller = {
+            Unlock-ADAccount $Login
 
-$Message1 = Write "Le compte de l'utilisateur $Login a été déverrouillé."
-[System.Windows.Forms.MessageBox]::Show($Message1,"Message",0,64)
+            $Message1 = Write "Le compte de l'utilisateur $Login a été déverrouillé."
+            [System.Windows.Forms.MessageBox]::Show($Message1, "Message", 0, 64)
 
-}
+          }
 
-$DeverrouilleButton = New-Object System.Windows.Forms.Button
-$DeverrouilleButton.Location = New-Object System.Drawing.Point(470,185)
-$DeverrouilleButton.Size = New-Object System.Drawing.Size(160,30)
-$DeverrouilleButton.Text = 'Déverrouiller le compte'
-$DeverrouilleButton.Add_Click($Deverrouiller)
-$form.Controls.Add($DeverrouilleButton)
+          $DeverrouilleButton = New-Object System.Windows.Forms.Button
+          $DeverrouilleButton.Location = New-Object System.Drawing.Point(470, 185)
+          $DeverrouilleButton.Size = New-Object System.Drawing.Size(160, 30)
+          $DeverrouilleButton.Text = 'Déverrouiller le compte'
+          $DeverrouilleButton.Add_Click($Deverrouiller)
+          $form.Controls.Add($DeverrouilleButton)
 
 
 
 
 
-}
+        }
 
-else 
-{
-$label3bis = New-Object System.Windows.Forms.Label
-$label3bis.Location = New-Object System.Drawing.Point(320,190)
-$label3bis.AutoSize = $true
-$label3bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label3bis.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label3bis.ForeColor = 'green'
-$label3bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label3bis.Text = "$verrouille2"
-$form.Controls.Add($label3bis)
-}
+        else {
+          $label3bis = New-Object System.Windows.Forms.Label
+          $label3bis.Location = New-Object System.Drawing.Point(320, 190)
+          $label3bis.AutoSize = $true
+          $label3bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label3bis.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label3bis.ForeColor = 'green'
+          $label3bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label3bis.Text = "$verrouille2"
+          $form.Controls.Add($label3bis)
+        }
 
 
-$label4 = New-Object System.Windows.Forms.Label
-$label4.Location = New-Object System.Drawing.Point(10,220)
-$label4.AutoSize = $true
-$label4.MinimumSize = New-Object System.Drawing.Size(800,150)
-#$label4.MaximumSize = New-Object System.Drawing.Size(730,300)
-$label4.Text = "
+        $label4 = New-Object System.Windows.Forms.Label
+        $label4.Location = New-Object System.Drawing.Point(10, 220)
+        $label4.AutoSize = $true
+        $label4.MinimumSize = New-Object System.Drawing.Size(800, 150)
+        #$label4.MaximumSize = New-Object System.Drawing.Size(730,300)
+        $label4.Text = "
 Date du dernier MDP incorrect : $DateBadPwd2`r`n
 Date d'expiration du MDP : $Dateformat2`r`n
 Unité organisationnelle : `n$OU`r`n
 Licence Office : $Attribute13`r`n"
-$label4.ForeColor = 'blue'
-$label4.Font = New-Object System.Drawing.Font("consolas",12)
-$form.Controls.Add($label4)
+        $label4.ForeColor = 'blue'
+        $label4.Font = New-Object System.Drawing.Font("consolas", 12)
+        $form.Controls.Add($label4)
 
 
-$label5 = New-Object System.Windows.Forms.Label
-$label5.Location = New-Object System.Drawing.Point(10,400)
-$label5.AutoSize = $true
-$label5.Scrollbars = "vertical"
-$label5.MinimumSize = New-Object System.Drawing.Size(800,200)
-$label5.MaximumSize = New-Object System.Drawing.Size(730,350)
-$label5.Text = "
+        $label5 = New-Object System.Windows.Forms.Label
+        $label5.Location = New-Object System.Drawing.Point(10, 400)
+        $label5.AutoSize = $true
+        $label5.Scrollbars = "vertical"
+        $label5.MinimumSize = New-Object System.Drawing.Size(800, 200)
+        $label5.MaximumSize = New-Object System.Drawing.Size(730, 350)
+        $label5.Text = "
 Groupes de sécurités : `r`n$MembreDeNewLines"
-$label5.ForeColor = 'blue'
-$label5.Font = New-Object System.Drawing.Font("consolas",12)
-$form.Controls.Add($label5)
+        $label5.ForeColor = 'blue'
+        $label5.Font = New-Object System.Drawing.Font("consolas", 12)
+        $form.Controls.Add($label5)
 
-$result = $form.ShowDialog()
+        $result = $form.ShowDialog()
 
-}
-}
+      }
+    }
 
-until ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
+    until ($result -eq [System.Windows.Forms.DialogResult]::Cancel)
 
-powershell $PSCommandPath
+    powershell $PSCommandPath
 
-}
-
-
-
-##############################################################################
-
-elseif ($SelectItem -eq "3 - Rapport sur un PC")
-  {
+  }
 
 
 
-#paramètres de la fenêtre
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Rapport sur un PC"
-$form.AutoSize = $true
-$form.MinimumSize = New-Object System.Drawing.Size(600,200)
-$form.MaximumSize = New-Object System.Drawing.Size(600,500)
-$form.SizeGripStyle ="hide"
-$form.MaximizeBox = $false
-$form.BackgroundImage = $picBATOU64
-$form.StartPosition = 'CenterScreen'
+  ##############################################################################
 
-$okButton = New-Object System.Windows.Forms.Button
-$okButton.Location = New-Object System.Drawing.Point(75,170)
-$okButton.Size = New-Object System.Drawing.Size(100,40)
-$okButton.Text = 'OK'
-$okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-$form.AcceptButton = $okButton
-$form.Controls.Add($okButton)
-
-$cancelButton = New-Object System.Windows.Forms.Button
-$cancelButton.Location = New-Object System.Drawing.Point(190,170)
-$cancelButton.Size = New-Object System.Drawing.Size(100,40)
-$cancelButton.Text = 'Cancel'
-$cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-$form.CancelButton = $cancelButton
-$form.Controls.Add($cancelButton)
-
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(10,20)
-$label.Size = New-Object System.Drawing.Size(600,20)
-$label.Text = "Indiquez le nom du PC :"
-$label.Font = New-Object System.Drawing.Font("Arial",12)
-$label.BackColor = "Transparent"
-$form.Controls.Add($label)
-
-$textBox = New-Object System.Windows.Forms.TextBox
-$textBox.Location = New-Object System.Drawing.Point(30,60)
-$textBox.Size = New-Object System.Drawing.Size(260,70)
-$textBox.Font = New-Object System.Drawing.Font("Arial",12)
-$form.Controls.Add($textBox)
-
-$form.Topmost = $true
-
-$form.Add_Shown({$textBox.Select()})
-$result = $form.ShowDialog()
-
-if ($result -eq [System.Windows.Forms.DialogResult]::OK)
-{
-    $PC = $textBox.Text
+  elseif ($SelectItem -eq "3 - Rapport sur un PC") {
 
 
-$PCAD = [bool] (Get-ADComputer $PC)
 
-if ($PCAD -eq $true)
+    #paramètres de la fenêtre
+    $form = New-Object System.Windows.Forms.Form
+    $form.Text = "Rapport sur un PC"
+    $form.AutoSize = $true
+    $form.MinimumSize = New-Object System.Drawing.Size(600, 200)
+    $form.MaximumSize = New-Object System.Drawing.Size(600, 500)
+    $form.SizeGripStyle = "hide"
+    $form.MaximizeBox = $false
+    $form.BackgroundImage = $picBATOU64
+    $form.StartPosition = 'CenterScreen'
 
-{
+    $okButton = New-Object System.Windows.Forms.Button
+    $okButton.Location = New-Object System.Drawing.Point(75, 170)
+    $okButton.Size = New-Object System.Drawing.Size(100, 40)
+    $okButton.Text = 'OK'
+    $okButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $form.AcceptButton = $okButton
+    $form.Controls.Add($okButton)
+
+    $cancelButton = New-Object System.Windows.Forms.Button
+    $cancelButton.Location = New-Object System.Drawing.Point(190, 170)
+    $cancelButton.Size = New-Object System.Drawing.Size(100, 40)
+    $cancelButton.Text = 'Cancel'
+    $cancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $cancelButton
+    $form.Controls.Add($cancelButton)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(10, 20)
+    $label.Size = New-Object System.Drawing.Size(600, 20)
+    $label.Text = "Indiquez le nom du PC :"
+    $label.Font = New-Object System.Drawing.Font("Arial", 12)
+    $label.BackColor = "Transparent"
+    $form.Controls.Add($label)
+
+    $textBox = New-Object System.Windows.Forms.TextBox
+    $textBox.Location = New-Object System.Drawing.Point(30, 60)
+    $textBox.Size = New-Object System.Drawing.Size(260, 70)
+    $textBox.Font = New-Object System.Drawing.Font("Arial", 12)
+    $form.Controls.Add($textBox)
+
+    $form.Topmost = $true
+
+    $form.Add_Shown({ $textBox.Select() })
+    $result = $form.ShowDialog()
+
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+      $PC = $textBox.Text
+
+
+      $PCAD = [bool] (Get-ADComputer $PC)
+
+      if ($PCAD -eq $true)
+      {
    
-  $OS = Get-ADComputer $PC -Property OperatingSystem | select -expandproperty OperatingSystem
+        $OS = Get-ADComputer $PC -Property OperatingSystem | select -expandproperty OperatingSystem
 
 
-  $BitLocker = (Get-ADObject -SearchBase (Get-ADComputer -Identity $PC) -Filter {objectClass -eq "msFVE-RecoveryInformation"} -Properties msFVE-RecoveryPassword).'msFVE-RecoveryPassword' 
-  $BitLockerNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $BitLocker))
+        $BitLocker = (Get-ADObject -SearchBase (Get-ADComputer -Identity $PC) -Filter { objectClass -eq "msFVE-RecoveryInformation" } -Properties msFVE-RecoveryPassword).'msFVE-RecoveryPassword' 
+        $BitLockerNewLines = $([String]::Join(([Convert]::ToChar(10)).ToString(), $BitLocker))
 
 
 
-  $OUPC = Get-ADComputer -Identity $PC | select -ExpandProperty DistinguishedName -Unique
+        $OUPC = Get-ADComputer -Identity $PC | select -ExpandProperty DistinguishedName -Unique
 
-  $Description = Get-ADComputer $PC -Property Description | select -expandproperty Description
+        $Description = Get-ADComputer $PC -Property Description | select -expandproperty Description
 
-  $DateCrea = Get-ADComputer $PC -Property WhenCreated | select -expandproperty WhenCreated
-  $DateCrea2 = $DateCrea.ToString("dd/MM/yyyy HH:mm:ss")
+        $DateCrea = Get-ADComputer $PC -Property WhenCreated | select -expandproperty WhenCreated
+        $DateCrea2 = $DateCrea.ToString("dd/MM/yyyy HH:mm:ss")
 
-  $Active = Get-ADComputer $PC -Property Enabled | select -expandproperty Enabled
-  $Active2 = if ($Active -eq $true){write "Activé"} else{write "Désactivé"}
+        $Active = Get-ADComputer $PC -Property Enabled | select -expandproperty Enabled
+        $Active2 = if ($Active -eq $true) { write "Activé" } else { write "Désactivé" }
 
-  $Date = Get-ADComputer $PC -Property LastLogonTimeStamp | select -ExpandProperty LastLogonTimeStamp
-  $DateFormat = [DateTime]::FromFileTime($Date)
-  $DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
+        $Date = Get-ADComputer $PC -Property LastLogonTimeStamp | select -ExpandProperty LastLogonTimeStamp
+        $DateFormat = [DateTime]::FromFileTime($Date)
+        $DateFormat2 = $DateFormat.ToString("dd/MM/yyyy HH:mm:ss")
 
 
  
 
-$form = New-Object System.Windows.Forms.Form
-$form.Text = "Résultat"
-#$form.Size = New-Object System.Drawing.Size(750,500)
-$form.AutoSize = $true
-$form.MinimumSize = New-Object System.Drawing.Size(750,450)
-$form.MaximumSize = New-Object System.Drawing.Size(750,900)
-$form.SizeGripStyle ="hide"
-$form.MaximizeBox = $false
-$form.StartPosition = 'CenterScreen'
+        $form = New-Object System.Windows.Forms.Form
+        $form.Text = "Résultat"
+        #$form.Size = New-Object System.Drawing.Size(750,500)
+        $form.AutoSize = $true
+        $form.MinimumSize = New-Object System.Drawing.Size(750, 450)
+        $form.MaximumSize = New-Object System.Drawing.Size(750, 900)
+        $form.SizeGripStyle = "hide"
+        $form.MaximizeBox = $false
+        $form.StartPosition = 'CenterScreen'
 
 
 
 
-$label = New-Object System.Windows.Forms.Label
-$label.Location = New-Object System.Drawing.Point(10,15)
-$label.AutoSize = $true
-$label.MinimumSize = New-Object System.Drawing.Size(200,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label.ForeColor = 'blue'
-$label.Font = New-Object System.Drawing.Font("consolas",12)
-$label.Text = "Nom du PC : $PC"
-$form.Controls.Add($label)
+        $label = New-Object System.Windows.Forms.Label
+        $label.Location = New-Object System.Drawing.Point(10, 15)
+        $label.AutoSize = $true
+        $label.MinimumSize = New-Object System.Drawing.Size(200, 40)
+        #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+        $label.ForeColor = 'blue'
+        $label.Font = New-Object System.Drawing.Font("consolas", 12)
+        $label.Text = "Nom du PC : $PC"
+        $form.Controls.Add($label)
 
 
 
-$label2 = New-Object System.Windows.Forms.Label
-$label2.Location = New-Object System.Drawing.Point(10,60)
-$label2.AutoSize = $true
-$label2.MinimumSize = New-Object System.Drawing.Size(200,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2.ForeColor = 'blue'
-$label2.Font = New-Object System.Drawing.Font("consolas",12)
-$label2.Text = "Etat d'activation du PC :"
-$form.Controls.Add($label2)
+        $label2 = New-Object System.Windows.Forms.Label
+        $label2.Location = New-Object System.Drawing.Point(10, 60)
+        $label2.AutoSize = $true
+        $label2.MinimumSize = New-Object System.Drawing.Size(200, 40)
+        #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+        $label2.ForeColor = 'blue'
+        $label2.Font = New-Object System.Drawing.Font("consolas", 12)
+        $label2.Text = "Etat d'activation du PC :"
+        $form.Controls.Add($label2)
 
-if ($active2 -eq "Activé")
-{
+        if ($active2 -eq "Activé") {
 
-$label2bis = New-Object System.Windows.Forms.Label
-$label2bis.Location = New-Object System.Drawing.Point(270,60)
-$label2bis.AutoSize = $true
-$label2bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2bis.ForeColor = 'green'
-$label2bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label2bis.Text = "$Active2"
-$form.Controls.Add($label2bis)
-}
+          $label2bis = New-Object System.Windows.Forms.Label
+          $label2bis.Location = New-Object System.Drawing.Point(270, 60)
+          $label2bis.AutoSize = $true
+          $label2bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label2bis.ForeColor = 'green'
+          $label2bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label2bis.Text = "$Active2"
+          $form.Controls.Add($label2bis)
+        }
 
-else 
-{
-$label2bis = New-Object System.Windows.Forms.Label
-$label2bis.Location = New-Object System.Drawing.Point(270,60)
-$label2bis.AutoSize = $true
-$label2bis.MinimumSize = New-Object System.Drawing.Size(100,40)
-#$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
-$label2bis.ForeColor = 'red'
-$label2bis.Font = New-Object System.Drawing.Font("consolas",12)
-$label2bis.Text = "$Active2"
-$form.Controls.Add($label2bis)
+        else {
+          $label2bis = New-Object System.Windows.Forms.Label
+          $label2bis.Location = New-Object System.Drawing.Point(270, 60)
+          $label2bis.AutoSize = $true
+          $label2bis.MinimumSize = New-Object System.Drawing.Size(100, 40)
+          #$label2.MaximumSize = New-Object System.Drawing.Size(730,950)
+          $label2bis.ForeColor = 'red'
+          $label2bis.Font = New-Object System.Drawing.Font("consolas", 12)
+          $label2bis.Text = "$Active2"
+          $form.Controls.Add($label2bis)
 
-$Reactive = {
-Set-ADComputer $PC -Enabled $true
+          $Reactive = {
+            Set-ADComputer $PC -Enabled $true
 
-$Message1 = Write "Le PC $PC a été réactivé."
-[System.Windows.Forms.MessageBox]::Show($Message1,"Message",0,64)
+            $Message1 = Write "Le PC $PC a été réactivé."
+            [System.Windows.Forms.MessageBox]::Show($Message1, "Message", 0, 64)
 
-}
+          }
 
-$ReactiveButton = New-Object System.Windows.Forms.Button
-$ReactiveButton.Location = New-Object System.Drawing.Point(430,55)
-$ReactiveButton.Size = New-Object System.Drawing.Size(150,30)
-$ReactiveButton.Text = 'Réactiver le PC'
-$ReactiveButton.Add_Click($Reactive)
-$form.Controls.Add($ReactiveButton)
+          $ReactiveButton = New-Object System.Windows.Forms.Button
+          $ReactiveButton.Location = New-Object System.Drawing.Point(430, 55)
+          $ReactiveButton.Size = New-Object System.Drawing.Size(150, 30)
+          $ReactiveButton.Text = 'Réactiver le PC'
+          $ReactiveButton.Add_Click($Reactive)
+          $form.Controls.Add($ReactiveButton)
 
 
-}
-
+        }
 
 
 
 
 
-$label3 = New-Object System.Windows.Forms.Label
-$label3.Location = New-Object System.Drawing.Point(10,80)
-#$label.Size = New-Object System.Drawing.Size(730,400)
-$label3.AutoSize = $true
-$label3.MinimumSize = New-Object System.Drawing.Size(730,400)
-$label3.MaximumSize = New-Object System.Drawing.Size(730,800)
-$label3.ForeColor = 'blue'
-$label3.Text = "
+
+        $label3 = New-Object System.Windows.Forms.Label
+        $label3.Location = New-Object System.Drawing.Point(10, 80)
+        #$label.Size = New-Object System.Drawing.Size(730,400)
+        $label3.AutoSize = $true
+        $label3.MinimumSize = New-Object System.Drawing.Size(730, 400)
+        $label3.MaximumSize = New-Object System.Drawing.Size(730, 800)
+        $label3.ForeColor = 'blue'
+        $label3.Text = "
 Système d'exploitation : $OS`r`n
 Clé BitLocker : `r`n$BitLockerNewLines`r`n
 OU : $OUPC`r`n
 Description : $Description`r`n
 Date de création du PC : $DateCrea2`r`n
 Dernière connexion sur le PC : $DateFormat2"
-$label3.Font = New-Object System.Drawing.Font("consolas",12)
-$form.Controls.Add($label3)
+        $label3.Font = New-Object System.Drawing.Font("consolas", 12)
+        $form.Controls.Add($label3)
 
-$result = $form.ShowDialog()
+        $result = $form.ShowDialog()
 
-}
-
-
-else 
-{
-   $Message1 = Write "Le PC $PC n'est pas dans l'AD."
-[System.Windows.Forms.MessageBox]::Show($Message1,"Message",0,16)
-
-}
-}
+      }
 
 
+      else {
+        $Message1 = Write "Le PC $PC n'est pas dans l'AD."
+        [System.Windows.Forms.MessageBox]::Show($Message1, "Message", 0, 16)
 
-powershell $PSCommandPath
+      }
+    }
 
-}
+
+
+    powershell $PSCommandPath
+
+  }
 }
