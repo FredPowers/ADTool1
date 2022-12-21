@@ -6,19 +6,7 @@ MENU :
 2 - Rapport sur un utilisateur
 3 - Rapport sur un PC
 
------------------------------------------------------------------------
-Le script utilse les modules suivants :
-
-#import du module Active Directory
-Import-module ActiveDirectory
-
-#charge le module pour la confection de fenêtre
-Add-Type -AssemblyName System.Windows.Forms
-Add-Type -AssemblyName System.Drawing
-
-#chargement du module windows form pour l'affichage des messagebox
-[System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
---------------------------------------------------------------------------
+-----------------------------------------------------------------
 
 Procédure pour script ADTool1.ps1 --> Procédure Script ADTool1.pdf
 Il y a quelques infos également en commentaire dans le script.
