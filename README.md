@@ -6,6 +6,8 @@ MENU :
 2 - Rapport sur un utilisateur
 3 - Rapport sur un PC
 
+<img width="442" alt="2022-12-21 21_50_24-Procédure Script ADTools1 docx  -  Mode protégé - Word" src="https://user-images.githubusercontent.com/105367565/209009133-f8a5f7ec-636c-4b88-8c4e-87760aef51ed.png">
+
 -----------------------------------------------------------------
 
 Procédure pour script ADTool1.ps1 --> Procédure Script ADTool1.pdf
